@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace AutomapperCFG
 {
-    public class ProfileConfig : Profile
+    public class MapperConfigurator : Profile
     {
-        public ProfileConfig()
+        public MapperConfigurator()
         {
             var allTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
             CreateMapToMappings(allTypes);

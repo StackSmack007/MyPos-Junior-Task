@@ -7,12 +7,12 @@ using CommonLibrary.Contracts;
 
 namespace Infrastructure.Repository
 {
-    public class Repository<T> : IRepository<T>
+    public class DbRepository<T> : IRepository<T>
         where T : class
     {
         private DbSet<T> dbSet;
         private DbContext context;
-        public Repository(GiftExchangerContext context)
+        public DbRepository(GiftExchangerContext context)
         {
             this.context = context;
             this.dbSet = context.Set<T>();
