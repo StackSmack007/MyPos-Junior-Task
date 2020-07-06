@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Infrasturcture.Data
+namespace ServiceLibrary
 {
     public class Class1
     {

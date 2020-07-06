@@ -1,5 +1,3 @@
-using System;
-
 namespace GiftExchangerApp.Models
 {
     public class ErrorViewModel
