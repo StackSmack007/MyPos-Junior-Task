@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Text;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -9,8 +8,8 @@ using Infrasturcture.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using CommonLibrary;
 
 namespace GiftExchangerApp.Areas.Identity.Pages.Account
 {
@@ -18,16 +17,19 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<UserGE> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<UserGE> _userManager;
         private readonly ILogger<RegisterModel> _logger;
 
         public RegisterModel(
             UserManager<UserGE> userManager,
             SignInManager<UserGE> signInManager,
+            RoleManager<IdentityRole> roleManager,
             ILogger<RegisterModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
         }
 
@@ -72,11 +74,17 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                string phoneManaged = "+" + Input.PhoneNumber.Replace(" ", "").Replace("-", "");
-                var user = new UserGE { UserName = Input.UserName, PhoneNumber = phoneManaged };
+                var phoneNumber = GlobalConstants.FormatPhoneString(Input.PhoneNumber);
+                var user = new UserGE { UserName = Input.UserName, PhoneNumber = phoneNumber };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+
                 if (result.Succeeded)
                 {
+                    var adminRoleName = GlobalConstants.RoleNames["Administrator"];
+                    await EnsureRoleExists(adminRoleName);
+                    await AssignRoleToFirstNUsers(GlobalConstants.AdminsCount, user, adminRoleName);
+
                     _logger.LogInformation("User created a new account with password.");
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -96,6 +104,22 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+        private async Task EnsureRoleExists(string role)
+        {
+            if (!await _roleManager.RoleExistsAsync(role))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+
+        private async Task AssignRoleToFirstNUsers(int n, UserGE user, string role)
+        {
+            bool shouldHaveRole = _userManager.Users.Count() <= n;
+            if (shouldHaveRole)
+            {
+                await _userManager.AddToRoleAsync(user, role);
+            }
         }
     }
 }

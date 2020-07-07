@@ -64,8 +64,8 @@ namespace GiftExchangerApp
                     opt.EnableEndpointRouting = false;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-          
-            services.AddControllersWithViews();
+
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
 
             var profile = new MapperConfigurator();

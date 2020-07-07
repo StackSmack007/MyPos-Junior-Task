@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using CommonLibrary;
+using Microsoft.EntityFrameworkCore;
 
 namespace GiftExchangerApp.Areas.Identity.Pages.Account
 {
@@ -18,8 +20,9 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
         private readonly UserManager<UserGE> _userManager;
         private readonly SignInManager<UserGE> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly string ambiguousMSG = "UserName/GSM or password mismatch";
 
-        public LoginModel(SignInManager<UserGE> signInManager, 
+        public LoginModel(SignInManager<UserGE> signInManager,
             ILogger<LoginModel> logger,
             UserManager<UserGE> userManager)
         {
@@ -40,9 +43,9 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            [Required, StringLength(16, MinimumLength = 4)]
+            [Display(Name = "Username or Phone")]
+            public string UnameOrPhone { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
@@ -77,29 +80,22 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                var userFd = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == Input.UnameOrPhone ||
+                                                                          x.PhoneNumber == GlobalConstants.FormatPhoneString(Input.UnameOrPhone));
+
+                if (userFd != null && 
+                    (await _signInManager.PasswordSignInAsync(userFd, Input.Password, Input.RememberMe, lockoutOnFailure: false)).Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, ambiguousMSG);
                     return Page();
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }
