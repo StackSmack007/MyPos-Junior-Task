@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ServiceLibrary
+﻿namespace ServiceLibrary
 {
     public class Class1
     {

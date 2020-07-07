@@ -49,7 +49,7 @@ namespace GiftExchangerApp
                 opt.Password.RequireUppercase = false;
                 opt.Password.RequiredLength = 4;
                 opt.Password.RequiredUniqueChars = 2;
-                opt.User.RequireUniqueEmail = true;
+                opt.User.RequireUniqueEmail = false;
                 opt.Lockout.MaxFailedAccessAttempts = 10;
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
             }).AddRoles<IdentityRole>()
