@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using CommonLibrary;
+using ServiceLibrary;
+using System.Threading;
 
 namespace GiftExchangerApp.Areas.Identity.Pages.Account
 {
@@ -19,25 +21,32 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
         private readonly SignInManager<UserGE> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<UserGE> _userManager;
+        private readonly IUserService userService;
         private readonly ILogger<RegisterModel> _logger;
 
         public RegisterModel(
             UserManager<UserGE> userManager,
             SignInManager<UserGE> signInManager,
             RoleManager<IdentityRole> roleManager,
+            IUserService userService,
             ILogger<RegisterModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            this.userService = userService;
             _logger = logger;
+            StatusMessages = new List<string>();
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
+        [TempData]
+
         public string ReturnUrl { get; set; }
 
+        public IList<string> StatusMessages { get; set; }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class InputModel
@@ -66,6 +75,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            //  StatusMessages = new List<string>();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -75,10 +85,14 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var phoneNumber = GlobalConstants.FormatPhoneString(Input.PhoneNumber);
+                if (await userService.PhoneNumberInUse(phoneNumber))
+                {
+                    StatusMessages.Add(GlobalConstants.PhoneAlreadyUsedError(phoneNumber));
+                    return Page();
+                }
+
                 var user = new UserGE { UserName = Input.UserName, PhoneNumber = phoneNumber };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-
-
                 if (result.Succeeded)
                 {
                     var adminRoleName = GlobalConstants.RoleNames["Administrator"];
@@ -86,6 +100,8 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
                     await AssignRoleToFirstNUsers(GlobalConstants.AdminsCount, user, adminRoleName);
 
                     _logger.LogInformation("User created a new account with password.");
+                    StatusMessages.Add("Successfull Registration!");
+                    Thread.Sleep(1000);
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         // return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
@@ -96,10 +112,8 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+
+                StatusMessages = result.Errors.Select(x => "Error: " + x.Description).ToList();
             }
 
             // If we got this far, something failed, redisplay form

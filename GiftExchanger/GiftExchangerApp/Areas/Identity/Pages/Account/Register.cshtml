@@ -11,6 +11,10 @@
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4 class="text-center">Create a new account.</h4>
             <hr />
+            @foreach (string msg in @Model.StatusMessages)
+            {
+                <partial name="_StatusMessage" model="msg" />
+            }
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Input.UserName"></label>
@@ -21,7 +25,7 @@
                 <label asp-for="Input.PhoneNumber"></label>
                 <div class="input-group-prepend">
                     <div class="input-group-text">+</div>
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="phone number (GSM)...">
+                    <input asp-for="Input.PhoneNumber" class="form-control" placeholder="phone number (GSM)...">
                 </div>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>

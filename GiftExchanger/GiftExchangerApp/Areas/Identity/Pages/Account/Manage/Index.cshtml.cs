@@ -1,24 +1,27 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using CommonLibrary;
 using Infrasturcture.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ServiceLibrary;
 
 namespace GiftExchangerApp.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
         private readonly UserManager<UserGE> _userManager;
+        private readonly IUserService userService;
         private readonly SignInManager<UserGE> _signInManager;
 
         public IndexModel(
-            UserManager<UserGE> userManager,
+            UserManager<UserGE> userManager, 
+            IUserService userService,
             SignInManager<UserGE> signInManager)
         {
             _userManager = userManager;
+            this.userService = userService;
             _signInManager = signInManager;
         }
 
@@ -78,20 +81,16 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var gsmCurrent = await _userManager.GetPhoneNumberAsync(user);
             var gsmRecievedFormated = GlobalConstants.FormatPhoneString(Input.PhoneNumber);
-            if (gsmRecievedFormated == gsmCurrent)
+            if (gsmRecievedFormated == user.PhoneNumber)
             {
-                StatusMessage = $"Error: The phone number {gsmRecievedFormated} is already set.";
-                ModelState.AddModelError(string.Empty, $"The phone number {gsmRecievedFormated} is already set.");
+                StatusMessage = GlobalConstants.PhoneAlreadySetError(gsmRecievedFormated);
                 return Page();
             }
 
-            var phoneUsedByAnotherUser = _userManager.Users.Any(x => x.UserName != Input.UserName && x.PhoneNumber == gsmRecievedFormated);
-
-            if (phoneUsedByAnotherUser)
+            if (await userService.PhoneInUseByOtherUser(Input.UserName,gsmRecievedFormated))
             {
-                StatusMessage = $"Error: The phone number {gsmRecievedFormated} is taken another user!";
+                StatusMessage = GlobalConstants.PhoneAlreadyUsedError(gsmRecievedFormated);
                 return Page();
             }
 

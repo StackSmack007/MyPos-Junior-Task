@@ -1,3 +1,7 @@
+using System;
+using AutoMapper;
+using AutomapperCFG;
+using ServiceLibrary;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -7,11 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Infrasturcture.Data;
 using Infrasturcture.Models;
-using System;
 using CommonLibrary.Contracts;
 using Infrastructure.Repository;
-using AutomapperCFG;
-using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,7 +40,7 @@ namespace GiftExchangerApp
             services.AddDbContext<GiftExchangerContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-           
+
 
             services.AddIdentity<UserGE, IdentityRole>(opt =>
             {
@@ -77,6 +78,8 @@ namespace GiftExchangerApp
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+          
+            services.AddTransient<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

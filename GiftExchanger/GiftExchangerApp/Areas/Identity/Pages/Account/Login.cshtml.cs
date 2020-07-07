@@ -20,7 +20,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
         private readonly UserManager<UserGE> _userManager;
         private readonly SignInManager<UserGE> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-        private readonly string ambiguousMSG = "UserName/GSM or password mismatch";
+        private readonly string ambiguousMSG = "Error: UserName/GSM or password mismatch";
 
         public LoginModel(SignInManager<UserGE> signInManager,
             ILogger<LoginModel> logger,
@@ -39,7 +39,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
         public string ReturnUrl { get; set; }
 
         [TempData]
-        public string ErrorMessage { get; set; }
+        public string StatusMessage { get; set; }
 
         public class InputModel
         {
@@ -57,10 +57,6 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!string.IsNullOrEmpty(ErrorMessage))
-            {
-                ModelState.AddModelError(string.Empty, ErrorMessage);
-            }
 
             returnUrl = returnUrl ?? Url.Content("~/");
 
@@ -91,7 +87,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, ambiguousMSG);
+                    StatusMessage = ambiguousMSG;
                     return Page();
                 }
             }
