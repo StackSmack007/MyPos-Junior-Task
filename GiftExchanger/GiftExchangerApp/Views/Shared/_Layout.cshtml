@@ -12,7 +12,7 @@
 </head>
 <body>
     @{
-        bool isAdmin = User.IsInRole(GlobalConstants.RoleNames["Administrator"]);
+        bool isAdmin = User.IsInRole(GlobalConstants.AdministratorRole);
     }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -28,17 +28,17 @@
                     {
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-clipboard-list"></i> Dashboard</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index"><i class="fas fa-clipboard-list"></i> Dashboard</a>
                             </li>
                             @if (isAdmin)
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-users"></i> Users</a>
-                                </li>  
+                                <li class="nav-item  mx-auto">
+                                    <partial name="_AdminSectionPartial" />
+                                </li>
+
                             }
                         </ul>
                     }
-
                 </div>
             </div>
         </nav>

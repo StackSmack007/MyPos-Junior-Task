@@ -95,7 +95,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    var adminRoleName = GlobalConstants.RoleNames["Administrator"];
+                    var adminRoleName = GlobalConstants.AdministratorRole;
                     await EnsureRoleExists(adminRoleName);
                     await AssignRoleToFirstNUsers(GlobalConstants.AdminsCount, user, adminRoleName);
 
