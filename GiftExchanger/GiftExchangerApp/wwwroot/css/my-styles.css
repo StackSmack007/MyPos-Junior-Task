@@ -1,0 +1,26 @@
+﻿form.action {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.table td,.table th {
+    vertical-align: middle !important;
+}
+
+form.action > input {
+    max-width: 5em;
+    border: 1.5px solid darkgreen;
+    border-radius: 0.5em;
+    background-color: antiquewhite;
+    color: darkgreen;
+    margin-right: .75em;
+    padding-left: 0.5em;
+}
+
+    form.action > button {
+        font-size: 1.4em;
+    }
+
+cursor-forbidden {
+    cursor: not-allowed;
+}

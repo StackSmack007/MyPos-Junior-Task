@@ -1,4 +1,6 @@
-﻿using Infrasturcture.Models;
+﻿using CommonLibrary.Extensions;
+using Infrastructure.DTOS;
+using Infrasturcture.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -23,5 +25,21 @@ namespace ServiceLibrary
 
         public async Task<bool> UserNameTaken(string userName) =>
             await _userManager.Users.AnyAsync(x => x.UserName.ToLower() == userName.ToLower());
+
+        public IQueryable<UserDataDTOout> GetUsersInfo() =>
+            this._userManager.Users.To<UserDataDTOout>();
+
+        public async Task<bool> AddCreditsAsync(CreditAdditionDTOin dto)
+        {
+            var userFd = await _userManager.FindByIdAsync(dto.RecieverId);
+            if (userFd is null)
+            {
+                return false;
+            }
+
+            userFd.CreditBalance += dto.Ammount;
+            await _userManager.UpdateAsync(userFd);
+            return true;
+        }
     }
 }

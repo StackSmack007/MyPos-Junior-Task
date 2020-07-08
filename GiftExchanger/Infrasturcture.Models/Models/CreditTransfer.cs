@@ -10,7 +10,6 @@ namespace Infrasturcture.Models
         public string RecieverId { get; set; }
         public virtual UserGE Reciever { get; set; }
 
-        //[MaxLength(1024)]
         public string Comment { get; set; }
     }
 }

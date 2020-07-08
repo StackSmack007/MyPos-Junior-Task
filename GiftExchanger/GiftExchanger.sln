@@ -11,21 +11,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{5A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C97A0E8D-EC04-449B-B0B3-0FE56C9E788E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftExchangerApp", "GiftExchangerApp\GiftExchangerApp.csproj", "{5A51CBB5-ED40-4466-923C-F558F96F1B12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftExchangerApp", "GiftExchangerApp\GiftExchangerApp.csproj", "{5A51CBB5-ED40-4466-923C-F558F96F1B12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrasturcture.Data", "Infrasturcture.Data\Infrasturcture.Data.csproj", "{6494A651-2191-40F1-A826-B2C04DD48967}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrasturcture.Data", "Infrasturcture.Data\Infrasturcture.Data.csproj", "{6494A651-2191-40F1-A826-B2C04DD48967}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrasturcture.Models", "Infrasturcture.Models\Infrasturcture.Models.csproj", "{58DDDE59-98F6-4A69-A1C5-2602EA75934F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrasturcture.Models", "Infrasturcture.Models\Infrasturcture.Models.csproj", "{58DDDE59-98F6-4A69-A1C5-2602EA75934F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Repository", "Infrastructure.Repository\Infrastructure.Repository.csproj", "{37012ADA-B494-451B-B538-CA4A4F0D6F40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Repository", "Infrastructure.Repository\Infrastructure.Repository.csproj", "{37012ADA-B494-451B-B538-CA4A4F0D6F40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrary", "CommonLibrary\CommonLibrary.csproj", "{6088CAAF-C804-4ECE-9067-B6AF6B33CC65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLibrary", "CommonLibrary\CommonLibrary.csproj", "{6088CAAF-C804-4ECE-9067-B6AF6B33CC65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLibrary", "ServiceLibrary\ServiceLibrary.csproj", "{3759512B-89A1-4389-80C4-5CEE47A0E15A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLibrary", "ServiceLibrary\ServiceLibrary.csproj", "{3759512B-89A1-4389-80C4-5CEE47A0E15A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomapperConfiguration", "AutomapperConfiguration\AutomapperConfiguration.csproj", "{ED1A1F74-8237-4C30-B7C2-B366D5136CDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutomapperConfiguration", "AutomapperConfiguration\AutomapperConfiguration.csproj", "{ED1A1F74-8237-4C30-B7C2-B366D5136CDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.DTOS", "Infrastructure.DTOS\Infrastructure.DTOS.csproj", "{9744ACD2-A3F2-4BAF-9A2F-7A7695C59E64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.DTOS", "Infrastructure.DTOS\Infrastructure.DTOS.csproj", "{9744ACD2-A3F2-4BAF-9A2F-7A7695C59E64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrary.Interfaces", "CommonLibrary.Interfaces\CommonLibrary.Interfaces.csproj", "{12CC8259-53AB-4A7F-89BE-1BE57E1BB6BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrary.Extensions", "CommonLibrary.Extensions\CommonLibrary.Extensions.csproj", "{2F532CBE-6437-4B64-9C50-AD62CF5C5DA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +69,14 @@ Global
 		{9744ACD2-A3F2-4BAF-9A2F-7A7695C59E64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9744ACD2-A3F2-4BAF-9A2F-7A7695C59E64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9744ACD2-A3F2-4BAF-9A2F-7A7695C59E64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12CC8259-53AB-4A7F-89BE-1BE57E1BB6BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12CC8259-53AB-4A7F-89BE-1BE57E1BB6BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12CC8259-53AB-4A7F-89BE-1BE57E1BB6BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12CC8259-53AB-4A7F-89BE-1BE57E1BB6BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F532CBE-6437-4B64-9C50-AD62CF5C5DA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F532CBE-6437-4B64-9C50-AD62CF5C5DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F532CBE-6437-4B64-9C50-AD62CF5C5DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F532CBE-6437-4B64-9C50-AD62CF5C5DA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +90,8 @@ Global
 		{3759512B-89A1-4389-80C4-5CEE47A0E15A} = {5A9B5D18-E725-40F8-914E-AB8108388B64}
 		{ED1A1F74-8237-4C30-B7C2-B366D5136CDD} = {C97A0E8D-EC04-449B-B0B3-0FE56C9E788E}
 		{9744ACD2-A3F2-4BAF-9A2F-7A7695C59E64} = {6DC09446-4DE8-47B9-814C-9215C004A288}
+		{12CC8259-53AB-4A7F-89BE-1BE57E1BB6BF} = {C97A0E8D-EC04-449B-B0B3-0FE56C9E788E}
+		{2F532CBE-6437-4B64-9C50-AD62CF5C5DA3} = {C97A0E8D-EC04-449B-B0B3-0FE56C9E788E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DA6CAAB1-943C-40D1-BB57-6BAD566B93D1}

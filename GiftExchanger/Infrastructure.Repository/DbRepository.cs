@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Infrasturcture.Data;
-using CommonLibrary.Contracts;
+using CommonLibrary.Interfaces;
 
 namespace Infrastructure.Repository
 {

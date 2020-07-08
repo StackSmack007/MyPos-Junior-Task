@@ -9,6 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommonLibrary.Extensions\CommonLibrary.Extensions.csproj" />
+    <ProjectReference Include="..\CommonLibrary.Interfaces\CommonLibrary.Interfaces.csproj" />
     <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj" />
     <ProjectReference Include="..\Infrastructure.DTOS\Infrastructure.DTOS.csproj" />
     <ProjectReference Include="..\Infrasturcture.Models\Infrasturcture.Models.csproj" />

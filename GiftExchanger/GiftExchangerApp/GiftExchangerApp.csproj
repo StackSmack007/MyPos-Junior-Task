@@ -28,7 +28,6 @@
     <ProjectReference Include="..\Infrastructure.DTOS\Infrastructure.DTOS.csproj" />
     <ProjectReference Include="..\Infrastructure.Repository\Infrastructure.Repository.csproj" />
     <ProjectReference Include="..\Infrasturcture.Data\Infrasturcture.Data.csproj" />
-    <ProjectReference Include="..\Infrasturcture.Models\Infrasturcture.Models.csproj" />
     <ProjectReference Include="..\ServiceLibrary\ServiceLibrary.csproj" />
   </ItemGroup>
 

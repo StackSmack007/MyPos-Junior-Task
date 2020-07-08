@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CommonLibrary.Interfaces;
 using System;
 using System.Linq;
 
@@ -12,8 +13,8 @@ namespace AutomapperCFG
             CreateMapToMappings(allTypes);
             CreateMapFromMappings(allTypes);
 
-            //CreateMap<AcUser, ProfileDataForEditDTOout>()
-            //    .ForMember(d => d.Gender, opt => opt.MapFrom(s => s.Gender.ToString().ToLower()));       
+            //CreateMap<UserGE, UserDataDTOout>()
+            //   .ForMember(d => d.IsAdmin, opt => opt.MapFrom(s => s.));       
         }
 
         private void CreateMapToMappings(System.Collections.Generic.IEnumerable<Type> allTypes)

@@ -10,8 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommonLibrary.Interfaces\CommonLibrary.Interfaces.csproj" />
     <ProjectReference Include="..\Infrastructure.DTOS\Infrastructure.DTOS.csproj" />
-    <ProjectReference Include="..\Infrasturcture.Data\Infrasturcture.Data.csproj" />
+    <ProjectReference Include="..\Infrasturcture.Models\Infrasturcture.Models.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,10 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Infrasturcture.Data;
 using Infrasturcture.Models;
-using CommonLibrary.Contracts;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using CommonLibrary.Interfaces;
 
 namespace GiftExchangerApp
 {

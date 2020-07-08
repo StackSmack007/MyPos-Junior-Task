@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CommonLibrary.Contracts
+namespace CommonLibrary.Interfaces
 {
     public interface IRepository<T>
         where T : class
