@@ -13,7 +13,6 @@
         }
 
         public decimal CreditBalance { get; set; }
-
         public virtual ICollection<CreditTransfer> TransactionsSent { get; set; }
         public virtual ICollection<CreditTransfer> TransactionsRecieved { get; set; }
     }

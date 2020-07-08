@@ -11,5 +11,6 @@ namespace Infrasturcture.Models
         public virtual UserGE Reciever { get; set; }
 
         public string Comment { get; set; }
+        public decimal Ammount { get; set; }
     }
 }

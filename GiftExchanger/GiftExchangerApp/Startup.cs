@@ -78,8 +78,9 @@ namespace GiftExchangerApp
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
-          
+
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IStatisticsService, StatisticsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

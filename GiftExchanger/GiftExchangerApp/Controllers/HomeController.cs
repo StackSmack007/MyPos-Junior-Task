@@ -2,21 +2,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using GiftExchangerApp.Models;
+using ServiceLibrary;
+using System.Threading.Tasks;
 
 namespace GiftExchangerApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IStatisticsService statisticsService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IStatisticsService statisticsService)
         {
             _logger = logger;
+            this.statisticsService = statisticsService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var data = await this.statisticsService.GetStatisticsAsync();
+            return View(data);
         }
 
         public IActionResult About()
