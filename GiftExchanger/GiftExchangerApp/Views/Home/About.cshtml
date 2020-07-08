@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Application Specifications";
+}
+<h1 class="py-4">@ViewData["Title"]</h1>
+
+<h3>Specification requirements:</h3>
+<p class="pb-4">
+    Must have Register, Login and Dashboard pages.
+    After registration in the system, every new user receives 100 credits automatically.
+    Upon login, the user should be able to see how many credits they have available in their account and
+    should be able to send credits to another user via filling the recipient’s mobile number (with which
+    the recipient has been registered in the platform). When sending credits, the user must have the
+    option to enter a message or write a wish in the form of a comment.
+    Every user must be able to see all transactions made from and to them on their Dashboard.
+    There must be one user with “Administrator” role, who, upon login, must be able to see all
+    transactions on the Dashboard. The Administrator must also have access to a page with all registered
+    users and their respective credits.
+</p>
+
+<h4>
+    Guidelines:
+</h4>
+<p class="pb-4">Use MVC architecture, Entity Framework, HTML, JavaScript, CSS.</p>
+
+<h3>Additional functionality and specifics:</h3>
+<ul class="pb-4">
+    <li>Every user can see his userName, Phone and credits remaining (Balance) from his user-page</li>
+    <li>User must have unique phone and username, however phoneNumber is changeable but only if another user does not occupy it.</li>
+    <li>Main Page - containing statistical information about the ammount of gift-transfers, registered users and so on...</li>
+    <li>Main Page - containing statistical information about the ammount of gift-transfers, registered users and so on...</li>
+    <li>First N=1 (settable in GlobalConstants.cs) users who register bocome administrators having all privlegues of admins.</li>
+    <li>Administrator has ability to increase (grant additionally) other users's credits /including himself/</li>
+</ul>
+<a class="h4 text-decoration-none" href="https://github.com/StackSmack007/MyPos-Junior-Task">GitHub Repo</a>
