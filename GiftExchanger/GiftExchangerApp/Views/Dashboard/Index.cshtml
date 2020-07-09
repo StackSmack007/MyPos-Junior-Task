@@ -1,2 +1,8 @@
-﻿@*@model ProductDetailedOutDto*@
-    <h3>Dashboard Display! From here credits and Send link must be available !</h3>
+﻿@model UserTransferInfoDTOout
+<h3>Dashboard Display! From here credits and Send link must be available !</h3>
+
+
+<p>@Model.UserName</p>
+<p>Balance: @Model.CreditBalance Credits</p>
+
+<a asp-area="" asp-controller="Dashboard" asp-action="SendGift" class="btn btn-primary">Send Gift</a>

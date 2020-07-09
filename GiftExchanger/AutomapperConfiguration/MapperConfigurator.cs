@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using CommonLibrary.Interfaces;
+using Infrastructure.DTOS;
+using Infrasturcture.Models;
 using System;
 using System.Linq;
 
@@ -13,8 +15,9 @@ namespace AutomapperCFG
             CreateMapToMappings(allTypes);
             CreateMapFromMappings(allTypes);
 
-            //CreateMap<UserGE, UserDataDTOout>()
-            //   .ForMember(d => d.IsAdmin, opt => opt.MapFrom(s => s.));       
+            CreateMap<UserGE, UserTransferInfoDTOout>()
+               .ForMember(d => d.Sent, opt => opt.MapFrom(s => s.TransactionsSent))
+               .ForMember(d => d.Recieved, opt => opt.MapFrom(s => s.TransactionsRecieved));
         }
 
         private void CreateMapToMappings(System.Collections.Generic.IEnumerable<Type> allTypes)

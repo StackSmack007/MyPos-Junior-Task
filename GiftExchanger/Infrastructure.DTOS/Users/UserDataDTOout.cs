@@ -1,5 +1,4 @@
-﻿using AutoMapper.Configuration.Annotations;
-using CommonLibrary.Interfaces;
+﻿using CommonLibrary.Interfaces;
 using Infrasturcture.Models;
 
 namespace Infrastructure.DTOS

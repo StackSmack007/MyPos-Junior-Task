@@ -84,7 +84,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var phoneNumber = GlobalConstants.FormatPhoneString(Input.PhoneNumber);
+                var phoneNumber = GlobalConstants.SanitizePhone(Input.PhoneNumber);
                 if (await userService.PhoneNumberInUse(phoneNumber))
                 {
                     StatusMessages.Add(GlobalConstants.PhoneAlreadyUsedError(phoneNumber));

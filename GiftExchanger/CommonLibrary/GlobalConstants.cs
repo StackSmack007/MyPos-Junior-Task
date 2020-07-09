@@ -13,7 +13,7 @@ namespace CommonLibrary
         public static Func<string, string> PhoneAlreadyUsedError = (x) => $"{ERROR_PREFIX} The phone number {x} is already set.";
         public static Func<string, string> PhoneAlreadySetError = (x) => $"{ERROR_PREFIX} The phone number {x} is already set.";
 
-        public static string FormatPhoneString(string unformatedPhone)
+        public static string SanitizePhone(string unformatedPhone)
         {
             var number = unformatedPhone.Replace(" ", "").Replace("-", "");
             return number.StartsWith("+") ? number : "+" + number;
