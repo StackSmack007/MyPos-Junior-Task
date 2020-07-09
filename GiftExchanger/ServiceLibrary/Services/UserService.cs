@@ -42,5 +42,8 @@ namespace ServiceLibrary
             return true;
         }
 
+        public async Task<decimal> GetUserCreditsById(string userId) =>
+            await _userManager.Users.Where(x => x.Id == userId).Select(x => x.CreditBalance).FirstOrDefaultAsync();
+
     }
 }

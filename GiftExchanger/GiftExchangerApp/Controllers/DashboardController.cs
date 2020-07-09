@@ -1,4 +1,6 @@
-﻿using Infrastructure.DTOS;
+﻿using CommonLibrary;
+using CommonLibrary.Extensions;
+using Infrastructure.DTOS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLibrary;
@@ -20,8 +22,7 @@ namespace GiftExchangerApp.Controllers
 
         public async Task<IActionResult> Index() //TO DO Pagination
         {
-            string userId = User.Claims.FirstOrDefault(x => x.Type.EndsWith("nameidentifier"))?.Value;
-            var result = await transferService.GetTransactionsByIdAsync(userId);
+            var result = await transferService.GetTransactionsByIdAsync(User.Id());
             return View(result);
         }
 
@@ -35,6 +36,7 @@ namespace GiftExchangerApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewData["Error"] = GlobalConstants.GeneralError(ModelState.Values.SelectMany(v => v.Errors).First().ErrorMessage);
                 return View(dto);
             }
 
@@ -44,7 +46,7 @@ namespace GiftExchangerApp.Controllers
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                ViewData["Error"] = ex.Message;
+                ViewData["Error"] = ex.ParamName;
                 return View(dto);
             }
 

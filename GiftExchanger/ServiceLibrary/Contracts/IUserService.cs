@@ -11,5 +11,6 @@ namespace ServiceLibrary
         Task<bool> PhoneNumberInUse(string phoneNumber);
         IQueryable<UserDataDTOout> GetUsersInfo();
         Task<bool> AddCreditsAsync(CreditAdditionDTOin dto);
+        Task<decimal> GetUserCreditsById(string userId);
     }
 }

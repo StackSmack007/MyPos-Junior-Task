@@ -1,13 +1,13 @@
-﻿using CommonLibrary;
+﻿using System;
+using System.Linq;
+using CommonLibrary;
 using CommonLibrary.Extensions;
 using Infrastructure.DTOS;
 using Infrasturcture.Models;
+using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace ServiceLibrary
 {
@@ -26,12 +26,12 @@ namespace ServiceLibrary
         public async Task GiveCreditsAsync(ClaimsPrincipal user, TransferDTOin dto)
         {
             bool recieverFound = await _userManager.Users
-                .AnyAsync(x => x.UserName.ToLower() == dto.RecieverPhoneOrUsername.ToLower() ||
-                x.PhoneNumber == GlobalConstants.SanitizePhone(dto.RecieverPhoneOrUsername));
+                .AnyAsync(x => x.UserName.ToLower() == dto.RecieverUnameOrPhone.ToLower() ||
+                x.PhoneNumber == GlobalConstants.SanitizePhone(dto.RecieverUnameOrPhone));
 
             if (!recieverFound)
             {
-                throw new ArgumentOutOfRangeException($"User with phone or username {dto.RecieverPhoneOrUsername} was not found!");
+                throw new ArgumentOutOfRangeException(GlobalConstants.UserNotLocatedByPhoneOrUserNameError(dto.RecieverUnameOrPhone));
             }
 
             UserGE sender = null;
@@ -42,11 +42,17 @@ namespace ServiceLibrary
                 sender = _userManager.GetUserAsync(user).GetAwaiter().GetResult();
                 if (sender.CreditBalance < dto.Ammount)
                 {
-                    throw new ArgumentOutOfRangeException($"Insufficient funds");
+                    throw new ArgumentOutOfRangeException(GlobalConstants.InsufficientFundsError);
                 }
 
-                reciever = _userManager.Users.FirstOrDefault(x => x.UserName.ToLower() == dto.RecieverPhoneOrUsername.ToLower() ||
-                                                             x.PhoneNumber == GlobalConstants.SanitizePhone(dto.RecieverPhoneOrUsername));
+                reciever = _userManager.Users.FirstOrDefault(x => x.UserName.ToLower() == dto.RecieverUnameOrPhone.ToLower() ||
+                                                             x.PhoneNumber == GlobalConstants.SanitizePhone(dto.RecieverUnameOrPhone));
+
+                if (reciever.Id == sender.Id)
+                {
+                    throw new ArgumentOutOfRangeException(GlobalConstants.AutoSendCreditsError);
+                }
+
                 sender.CreditBalance -= dto.Ammount;
                 reciever.CreditBalance += dto.Ammount;
                 _userManager.UpdateAsync(sender).GetAwaiter().GetResult();

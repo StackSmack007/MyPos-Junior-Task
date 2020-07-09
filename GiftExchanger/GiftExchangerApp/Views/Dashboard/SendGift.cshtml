@@ -1,7 +1,37 @@
 ﻿@model TransferDTOin
+@inject IUserService userService
 @{
     ViewData["Title"] = "Send Gift";
+    decimal balance = userService.GetUserCreditsById(User.Id()).GetAwaiter().GetResult();
 }
 
-<h1>Create Transfer Form! Todo</h1>
-
+<h1 class="text-center">@ViewData["Title"]</h1>
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <section>
+            <form method="post">
+                <hr />
+                <h5 class="text-right font-italic pb-4">Available credits: @balance.ToString("F2")</h5>
+                @if (ViewData.ContainsKey("Error"))
+                {
+                    <partial name="_StatusMessage" model="@ViewData["Error"]" />
+                }
+                <div class="form-group">
+                    <label asp-for="@Model.RecieverUnameOrPhone">Reciever UserName or Phone Number*</label>
+                    <input asp-for="@Model.RecieverUnameOrPhone" class="form-control" placeholder="Either one works..." />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Ammount">Credits to send*</label>
+                    <input asp-for="@Model.Ammount" type="number" step="0.01" min="0.01" max="@balance" class="form-control" placeholder="Credit ammount..." />
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Comment"></label>
+                    <textarea asp-for="@Model.Comment" class="form-control" placeholder="Write message to reciever...">   </textarea>
+                </div>
+                <div class="form-group row justify-content-center">
+                    <button type="submit" class="btn btn-primary">Send Gift</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
