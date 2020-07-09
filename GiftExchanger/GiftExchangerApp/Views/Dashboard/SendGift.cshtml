@@ -2,7 +2,7 @@
 @inject IUserService userService
 @{
     ViewData["Title"] = "Send Gift";
-    decimal balance = userService.GetUserCreditsById(User.Id()).GetAwaiter().GetResult();
+    decimal balance = userService.GetUserCreditsByIdAsync(User.Id()).GetAwaiter().GetResult();
 }
 
 <h1 class="text-center">@ViewData["Title"]</h1>

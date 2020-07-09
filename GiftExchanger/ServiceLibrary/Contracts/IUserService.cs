@@ -6,11 +6,11 @@ namespace ServiceLibrary
 {
     public interface IUserService
     {
-        Task<bool> PhoneInUseByOtherUser(string myUserName, string phoneNumberFormated);
-        Task<bool> UserNameTaken(string userName);
-        Task<bool> PhoneNumberInUse(string phoneNumber);
+        Task<bool> PhoneInUseByOtherUserAsync(string myUserName, string phoneNumberFormated);
+        Task<bool> UserNameTakenAsync(string userName);
+        Task<bool> PhoneNumberInUseAsync(string phoneNumber);
         IQueryable<UserDataDTOout> GetUsersInfo();
         Task<bool> AddCreditsAsync(CreditAdditionDTOin dto);
-        Task<decimal> GetUserCreditsById(string userId);
+        Task<decimal> GetUserCreditsByIdAsync(string userId);
     }
 }

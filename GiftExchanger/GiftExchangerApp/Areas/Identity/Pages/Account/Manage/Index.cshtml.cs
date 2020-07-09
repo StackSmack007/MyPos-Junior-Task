@@ -88,7 +88,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            if (await userService.PhoneInUseByOtherUser(Input.UserName,gsmRecievedFormated))
+            if (await userService.PhoneInUseByOtherUserAsync(Input.UserName,gsmRecievedFormated))
             {
                 StatusMessage = GlobalConstants.PhoneAlreadyUsedError(gsmRecievedFormated);
                 return Page();

@@ -85,7 +85,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var phoneNumber = GlobalConstants.SanitizePhone(Input.PhoneNumber);
-                if (await userService.PhoneNumberInUse(phoneNumber))
+                if (await userService.PhoneNumberInUseAsync(phoneNumber))
                 {
                     StatusMessages.Add(GlobalConstants.PhoneAlreadyUsedError(phoneNumber));
                     return Page();

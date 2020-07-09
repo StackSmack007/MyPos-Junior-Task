@@ -17,13 +17,13 @@ namespace ServiceLibrary
             _userManager = userManager;
         }
 
-        public async Task<bool> PhoneInUseByOtherUser(string myUserName, string phoneNumberFormated) =>
+        public async Task<bool> PhoneInUseByOtherUserAsync(string myUserName, string phoneNumberFormated) =>
            await _userManager.Users.AnyAsync(x => x.UserName != myUserName && x.PhoneNumber == phoneNumberFormated);
 
-        public async Task<bool> PhoneNumberInUse(string phoneNumber) =>
+        public async Task<bool> PhoneNumberInUseAsync(string phoneNumber) =>
             await _userManager.Users.Select(x => x.PhoneNumber).AnyAsync(x => x == phoneNumber);
 
-        public async Task<bool> UserNameTaken(string userName) =>
+        public async Task<bool> UserNameTakenAsync(string userName) =>
             await _userManager.Users.AnyAsync(x => x.UserName.ToLower() == userName.ToLower());
 
         public IQueryable<UserDataDTOout> GetUsersInfo() =>
@@ -42,7 +42,7 @@ namespace ServiceLibrary
             return true;
         }
 
-        public async Task<decimal> GetUserCreditsById(string userId) =>
+        public async Task<decimal> GetUserCreditsByIdAsync(string userId) =>
             await _userManager.Users.Where(x => x.Id == userId).Select(x => x.CreditBalance).FirstOrDefaultAsync();
 
     }
