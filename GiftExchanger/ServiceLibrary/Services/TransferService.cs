@@ -8,17 +8,23 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using CommonLibrary.Interfaces;
 
 namespace ServiceLibrary
 {
     public class TransferService : ITransferService
     {
         private readonly UserManager<UserGE> _userManager;
+        private readonly IRepository<CreditTransfer> transfersRepository;
 
-        public TransferService(UserManager<UserGE> userManager)
+        public TransferService(UserManager<UserGE> userManager, IRepository<CreditTransfer> transfersRepository)
         {
             this._userManager = userManager;
+            this.transfersRepository = transfersRepository;
         }
+
+        public IQueryable<TransferInfoDTOout> GetAllTransfersInfo() =>
+           transfersRepository.All.Where(x => !x.IsDeleted).OrderByDescending(x => x.CreatedOn).To<TransferInfoDTOout>();
 
         public async Task<UserTransferInfoDTOout> GetTransactionsByIdAsync(string userId) =>
             await _userManager.Users.Where(x => x.Id == userId).To<UserTransferInfoDTOout>().FirstOrDefaultAsync();

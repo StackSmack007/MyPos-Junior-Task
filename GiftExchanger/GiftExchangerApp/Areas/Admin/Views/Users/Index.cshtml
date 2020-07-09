@@ -1,5 +1,4 @@
-﻿
-@model ICollection<UserDataDTOout>
+﻿@model ICollection<UserDataDTOout>
 
 @{
     ViewData["Title"] = "Users All";
@@ -27,7 +26,6 @@
             <tbody>
                 @foreach (var user in Model)
                 {
-                    //  var effect = order.Status == Status.Canceled ? "text-danger" : order.Status == Status.Finalised ? "text-success" : "";
                     <tr>
                         <th scope="row">@(++i)</th>
                         <td>@user.UserName</td>

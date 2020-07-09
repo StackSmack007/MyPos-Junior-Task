@@ -1,8 +1,40 @@
-﻿@{
+﻿@model TransferInfoDTOout[]
+@{
     ViewData["Title"] = "Transfers";
+    bool[] fullTextVisible = new bool[@Model.Count()];
 }
 
-<h1>Transfers</h1>
+<h1 class="text-center pt-4"><i class="fas fa-users"></i> All Transfers</h1>
+<p class="text-center font-italic">All credit transfers are visible here!</p>
 
-<p>Here Admin must see other users's credit exchange!</p>
+<center>
+    <div class="w-75 pt-4 mt-4 .admin-users">
 
+        <table class="table table-striped" id="dataTableJS">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Sender UserName</th>
+                    <th scope="col">Reciever UserName</th>
+                    <th scope="col">Ammount</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Date Sent</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    var current = Model[i];              
+                    <tr>
+                        <th scope="row">@(i + 1)</th>
+                        <td>@current.SenderUserName</td>
+                        <td>@current.RecieverUserName</td>
+                        <td>@current.Ammount.ToString("F2")</td>                              
+                        <td>@(fullTextVisible[i] ? current.Comment : GlobalConstants.ShortenText(10, current.Comment))</td>   
+                        <td>@GlobalConstants.FormatDateTime(current.CreatedOn)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</center>
