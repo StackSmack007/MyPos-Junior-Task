@@ -1,4 +1,5 @@
 ﻿using CommonLibrary;
+using CommonLibrary.Cashe;
 using CommonLibrary.Interfaces;
 using Infrastructure.DTOS;
 using Infrasturcture.Models;
@@ -11,6 +12,7 @@ namespace ServiceLibrary
 {
     public class StatisticsService : IStatisticsService
     {
+
         private readonly UserManager<UserGE> _userManager;
         private readonly IRepository<CreditTransfer> transfersRepository;
 
@@ -20,35 +22,35 @@ namespace ServiceLibrary
             this.transfersRepository = transfersRepository;
         }
 
-
         public async Task<AppStatisticsDTOout> GetStatisticsAsync()
         {
-            UserGE[] users = await this._userManager.Users.ToArrayAsync();
-
-            var adminsCount = 0;
-
-
-            foreach (var user in users)
+            if (!CasheData.HasData("OveralStats"))
             {
-                if (await _userManager.IsInRoleAsync(user, GlobalConstants.AdministratorRole))
+                UserGE[] users = await this._userManager.Users.ToArrayAsync();
+
+                var adminsCount = 0;
+
+
+                foreach (var user in users)
                 {
-                    adminsCount++;
+                    if (await _userManager.IsInRoleAsync(user, GlobalConstants.AdministratorRole))
+                    {
+                        adminsCount++;
+                    }
                 }
+
+                var result = new AppStatisticsDTOout
+                {
+                    TotalUsersCount = users.Count(),
+                    AdminsUsersCount = adminsCount,
+                    TotalTransactions = await transfersRepository.All.Where(x => !x.IsDeleted).CountAsync(),
+                    TotalTransferedCredits = await transfersRepository.All.Where(x => !x.IsDeleted).SumAsync(x => x.Ammount),
+                };
+
+                CasheData.Save(GlobalConstants.StatisticsStore, result);
             }
 
-            var result = new AppStatisticsDTOout
-            {
-                TotalUsersCount = users.Count(),
-                AdminsUsersCount = adminsCount,
-                TotalTransactions = await transfersRepository.All.Where(x => !x.IsDeleted).CountAsync(),
-                TotalTransferedCredits = await transfersRepository.All.Where(x => !x.IsDeleted).SumAsync(x => x.Ammount),
-            };
-
-            return result;
-            //  db.Users.Count(x => x.Roles.Select(k => k.RoleId).Contains(g.Key.Id))
+            return CasheData.Retrieve<AppStatisticsDTOout>(GlobalConstants.StatisticsStore);
         }
-
-
-
     }
 }

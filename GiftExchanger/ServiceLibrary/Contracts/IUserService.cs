@@ -10,7 +10,7 @@ namespace ServiceLibrary
         Task<bool> UserNameTakenAsync(string userName);
         Task<bool> PhoneNumberInUseAsync(string phoneNumber);
         IQueryable<UserDataDTOout> GetUsersInfo();
-        Task<bool> AddCreditsAsync(CreditAdditionDTOin dto);
+
         Task<decimal> GetUserCreditsByIdAsync(string userId);
     }
 }

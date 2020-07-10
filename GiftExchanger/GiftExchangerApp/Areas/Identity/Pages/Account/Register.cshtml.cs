@@ -75,7 +75,6 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            //  StatusMessages = new List<string>();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -100,23 +99,17 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
                     await AssignRoleToFirstNUsers(GlobalConstants.AdminsCount, user, adminRoleName);
 
                     _logger.LogInformation("User created a new account with password.");
+                    CommonLibrary.Cashe.CasheData.ResetData(GlobalConstants.StatisticsStore);
                     StatusMessages.Add("Successfull Registration!");
                     Thread.Sleep(1000);
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        // return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: true);
-                        return LocalRedirect(returnUrl);
-                    }
+
+                    await _signInManager.SignInAsync(user, isPersistent: true);
+                    return LocalRedirect(returnUrl);
                 }
 
                 StatusMessages = result.Errors.Select(x => "Error: " + x.Description).ToList();
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
         private async Task EnsureRoleExists(string role)

@@ -7,8 +7,9 @@ namespace ServiceLibrary
 {
     public interface ITransferService
     {
-        Task<UserTransferInfoDTOout> GetTransactionsByIdAsync(string userId);
-        Task GiveCreditsAsync(ClaimsPrincipal user, TransferDTOin dto);
         IQueryable<TransferInfoDTOout> GetAllTransfersInfo();
+        Task<UserTransferInfoDTOout> GetTransactionsUserIdAsync(string userId);
+        Task TransferCreditsAsync(ClaimsPrincipal user, TransferDTOin dto);
+        bool IncreaseUserCredits(CreditAdditionDTOin dto);
     }
 }

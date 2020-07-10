@@ -29,18 +29,6 @@ namespace ServiceLibrary
         public IQueryable<UserDataDTOout> GetUsersInfo() =>
             this._userManager.Users.To<UserDataDTOout>();
 
-        public async Task<bool> AddCreditsAsync(CreditAdditionDTOin dto)
-        {
-            var userFd = await _userManager.FindByIdAsync(dto.RecieverId);
-            if (userFd is null)
-            {
-                return false;
-            }
-
-            userFd.CreditBalance += dto.Ammount;
-            await _userManager.UpdateAsync(userFd);
-            return true;
-        }
 
         public async Task<decimal> GetUserCreditsByIdAsync(string userId) =>
             await _userManager.Users.Where(x => x.Id == userId).Select(x => x.CreditBalance).FirstOrDefaultAsync();

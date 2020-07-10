@@ -1,4 +1,5 @@
 ﻿using CommonLibrary;
+using Infrastructure.DTOS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,17 @@ namespace GiftExchangerApp.Areas.Admin.Controllers
         {
             var data = await this.transferService.GetAllTransfersInfo().ToArrayAsync();
             return View(data);
+        }
+
+
+        [HttpPost]
+        public IActionResult AddCredits(CreditAdditionDTOin dto)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Index", "Users", new { Area = "Admin" });
+
+            transferService.IncreaseUserCredits(dto);
+            return RedirectToAction("Index", "Users", new { Area = "Admin" });
         }
     }
 }

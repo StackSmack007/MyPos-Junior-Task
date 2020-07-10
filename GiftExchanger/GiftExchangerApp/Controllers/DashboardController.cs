@@ -22,7 +22,7 @@ namespace GiftExchangerApp.Controllers
 
         public async Task<IActionResult> Index() //TO DO Pagination
         {
-            var result = await transferService.GetTransactionsByIdAsync(User.Id());
+            var result = await transferService.GetTransactionsUserIdAsync(User.Id());
             return View(result);
         }
 
@@ -42,7 +42,7 @@ namespace GiftExchangerApp.Controllers
 
             try
             {
-                await transferService.GiveCreditsAsync(User, dto);
+                await transferService.TransferCreditsAsync(User, dto);
             }
             catch (ArgumentOutOfRangeException ex)
             {

@@ -25,11 +25,27 @@ namespace ServiceLibrary
 
         public IQueryable<TransferInfoDTOout> GetAllTransfersInfo() =>
            transfersRepository.All.Where(x => !x.IsDeleted).OrderByDescending(x => x.CreatedOn).To<TransferInfoDTOout>();
-
-        public async Task<UserTransferInfoDTOout> GetTransactionsByIdAsync(string userId) =>
+        public async Task<UserTransferInfoDTOout> GetTransactionsUserIdAsync(string userId) =>
             await _userManager.Users.Where(x => x.Id == userId).To<UserTransferInfoDTOout>().FirstOrDefaultAsync();
 
-        public async Task GiveCreditsAsync(ClaimsPrincipal user, TransferDTOin dto)
+        public bool IncreaseUserCredits(CreditAdditionDTOin dto)
+        {
+            lock (LockObjects.UserBalanceObject)
+            {
+                var userFd = _userManager.FindByIdAsync(dto.RecieverId).GetAwaiter().GetResult();
+                if (userFd is null)
+                {
+                    return false;
+                }
+
+                userFd.CreditBalance += dto.Ammount;
+                _userManager.UpdateAsync(userFd).GetAwaiter().GetResult();
+            }
+
+            return true;
+        }
+
+        public async Task TransferCreditsAsync(ClaimsPrincipal user, TransferDTOin dto)
         {
             bool recieverFound = await _userManager.Users
                 .AnyAsync(x => x.UserName.ToLower() == dto.RecieverUnameOrPhone.ToLower() ||
@@ -74,6 +90,7 @@ namespace ServiceLibrary
             };
             sender.TransactionsSent.Add(transaction);
             await _userManager.UpdateAsync(sender);
+            CommonLibrary.Cashe.CasheData.ResetData(GlobalConstants.StatisticsStore);
         }
     }
 }

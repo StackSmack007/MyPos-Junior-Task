@@ -1,5 +1,4 @@
 ﻿using CommonLibrary;
-using Infrastructure.DTOS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,16 +22,6 @@ namespace GiftExchangerApp.Areas.Admin.Controllers
         {
             var allUsers = await userService.GetUsersInfo().ToArrayAsync();
             return View(allUsers);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddCredits(CreditAdditionDTOin dto)
-        {
-            if (!ModelState.IsValid)
-                return RedirectToAction("Index");
-
-            await this.userService.AddCreditsAsync(dto);
-            return RedirectToAction("Index");
         }
     }
 }
