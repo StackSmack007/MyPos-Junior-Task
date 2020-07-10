@@ -32,8 +32,13 @@ namespace GiftExchangerApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendGiftAsync(TransferDTOin dto)
+        public async Task<IActionResult> SendGift(TransferDTOin dto)
         {
+            if (!Request.Headers["Referer"].ToString().TrimEnd('/').EndsWith("/SendGift"))
+            {   // We arrive from elsewhere so not all data filled and no warnings needed
+                return View(dto);
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewData["Error"] = GlobalConstants.GeneralError(ModelState.Values.SelectMany(v => v.Errors).First().ErrorMessage);

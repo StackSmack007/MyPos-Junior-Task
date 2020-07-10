@@ -2,7 +2,7 @@
 
 namespace Infrastructure.DTOS
 {
-    public class UserTransferInfoDTOout
+    public class UserDashboardInfoDTOout
     {
         public string UserName { get; set; }
         public decimal CreditBalance { get; set; }

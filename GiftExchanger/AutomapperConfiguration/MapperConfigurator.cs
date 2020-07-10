@@ -15,7 +15,7 @@ namespace AutomapperCFG
             CreateMapToMappings(allTypes);
             CreateMapFromMappings(allTypes);
 
-            CreateMap<UserGE, UserTransferInfoDTOout>()
+            CreateMap<UserGE, UserDashboardInfoDTOout>()
                .ForMember(d => d.Sent, opt => opt.MapFrom(s => s.TransactionsSent))
                .ForMember(d => d.Recieved, opt => opt.MapFrom(s => s.TransactionsRecieved));
         }

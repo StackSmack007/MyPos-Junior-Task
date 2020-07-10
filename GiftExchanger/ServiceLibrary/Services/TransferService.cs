@@ -25,8 +25,8 @@ namespace ServiceLibrary
 
         public IQueryable<TransferInfoDTOout> GetAllTransfersInfo() =>
            transfersRepository.All.Where(x => !x.IsDeleted).OrderByDescending(x => x.CreatedOn).To<TransferInfoDTOout>();
-        public async Task<UserTransferInfoDTOout> GetTransactionsUserIdAsync(string userId) =>
-            await _userManager.Users.Where(x => x.Id == userId).To<UserTransferInfoDTOout>().FirstOrDefaultAsync();
+        public async Task<UserDashboardInfoDTOout> GetTransactionsUserIdAsync(string userId) =>
+            await _userManager.Users.Where(x => x.Id == userId).To<UserDashboardInfoDTOout>().FirstOrDefaultAsync();
 
         public bool IncreaseUserCredits(CreditAdditionDTOin dto)
         {
