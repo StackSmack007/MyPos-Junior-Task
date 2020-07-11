@@ -5,6 +5,7 @@ using Infrastructure.DTOS;
 using Infrasturcture.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,23 +27,23 @@ namespace ServiceLibrary
         {
             if (!CasheData.HasData("OveralStats"))
             {
-                UserGE[] users = await this._userManager.Users.ToArrayAsync();
+                UserGE[] users = await _userManager.Users.ToArrayAsync();
 
-                var adminsCount = 0;
+                var admins = new HashSet<string>();
 
 
                 foreach (var user in users)
                 {
                     if (await _userManager.IsInRoleAsync(user, GlobalConstants.AdministratorRole))
                     {
-                        adminsCount++;
+                        admins.Add(user.UserName);
                     }
                 }
 
                 var result = new AppStatisticsDTOout
                 {
-                    TotalUsersCount = users.Count(),
-                    AdminsUsersCount = adminsCount,
+                    AllUserNames = users.Select(x => x.UserName).ToArray(),
+                    AdminUserNames = admins,
                     TotalTransactions = await transfersRepository.All.Where(x => !x.IsDeleted).CountAsync(),
                     TotalTransferedCredits = await transfersRepository.All.Where(x => !x.IsDeleted).SumAsync(x => x.Ammount),
                 };

@@ -1,10 +1,12 @@
-﻿namespace Infrastructure.DTOS
+﻿using System.Collections.Generic;
+
+namespace Infrastructure.DTOS
 {
     public class AppStatisticsDTOout
     {
-        public int TotalUsersCount { get;  set; }
-        public int AdminsUsersCount { get;  set; }
-        public int TotalTransactions { get;  set; }
-        public decimal TotalTransferedCredits { get;  set; }
+        public virtual ICollection<string> AllUserNames { get; set; } = new HashSet<string>();
+        public virtual ICollection<string> AdminUserNames { get; set; } = new HashSet<string>();
+        public int TotalTransactions { get; set; }
+        public decimal TotalTransferedCredits { get; set; }
     }
 }

@@ -7,13 +7,13 @@
     <h1 class="display-4 py-3">Welcome to Gift Exchanger App</h1>
     <h3>Purpose:</h3>
     <p class="font-italic">Every user recieves 100 credits upon registration. User can transfer credits to other users and recieve credits by them. </p>
-<div>
-    <h3 class="pt-4"><i class="fas fa-database"></i> Statistics:</h3>
-    <ul class="list-unstyled">
-        <li class="pb-3"><i class="fas fa-users"></i> Users registered : @Model.TotalUsersCount</li>
-        <li class="pb-3"><i class="fas fa-users-cog"></i> Administrators : @Model.AdminsUsersCount</li>
-        <li class="pb-3"><i class="fas fa-exchange-alt"></i> Gift Transfers Count : @Model.TotalTransactions</li>
-        <li class="pb-3"><i class="fas fa-money-bill-wave"></i> Gift Credits Transfered : @Model.TotalTransferedCredits</li>
-    </ul>
-</div>
+    <div>
+        <h3 class="pt-4"><i class="fas fa-database"></i> Statistics:</h3>
+        <ul class="list-unstyled">
+            <li class="pb-3"><i class="fas fa-users"></i> @Model.AdminUserNames.Count() Users registered : [ @string.Join(", ", Model.AllUserNames) ]</li>
+            <li class="pb-3"><i class="fas fa-users-cog"></i> @Model.AdminUserNames.Count() Administrators : [ @string.Join(", ", Model.AdminUserNames) ]</li>
+            <li class="pb-3"><i class="fas fa-exchange-alt"></i> Gift Transfers Count : @Model.TotalTransactions</li>
+            <li class="pb-3"><i class="fas fa-money-bill-wave"></i> Gift Credits Transfered : @Model.TotalTransferedCredits</li>
+        </ul>
+    </div>
 </div>

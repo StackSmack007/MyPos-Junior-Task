@@ -17,29 +17,10 @@ namespace CommonLibrary
         public static readonly string InsufficientFundsError = $"{ERROR_PREFIX} Insufficient funds";
         public static readonly string AutoSendCreditsError = $"{ERROR_PREFIX} Not allowed to send credits to yourself!";
 
-        public const string StatisticsStore = "StatisticsStore" ;
+        public const string StatisticsStore = "StatisticsStore";
 
 
         public static Func<DateTime, string> FormatDateTime = (x) => x.ToString("dd/MM/yyyy hh:mm");
-        public static string ShortenText(int maxLength, string txt, string suffix = "...")
-        {
-            if (String.IsNullOrEmpty(txt))
-            {
-                return string.Empty;
-            }
 
-            if (txt.Length < maxLength)
-            {
-                return txt;
-            }
-
-            return txt.Substring(0, maxLength - suffix.Length) + suffix;
-        }
-
-        public static string SanitizePhone(string unformatedPhone)
-        {
-            var number = unformatedPhone.Replace(" ", "").Replace("-", "");
-            return number.StartsWith("+") ? number : "+" + number;
-        }
     }
 }

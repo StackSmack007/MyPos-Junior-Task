@@ -49,7 +49,7 @@ namespace ServiceLibrary
         {
             bool recieverFound = await _userManager.Users
                 .AnyAsync(x => x.UserName.ToLower() == dto.RecieverUnameOrPhone.ToLower() ||
-                x.PhoneNumber == GlobalConstants.SanitizePhone(dto.RecieverUnameOrPhone));
+                x.PhoneNumber == Helpers.SanitizePhone(dto.RecieverUnameOrPhone));
 
             if (!recieverFound)
             {
@@ -68,7 +68,7 @@ namespace ServiceLibrary
                 }
 
                 reciever = _userManager.Users.FirstOrDefault(x => x.UserName.ToLower() == dto.RecieverUnameOrPhone.ToLower() ||
-                                                             x.PhoneNumber == GlobalConstants.SanitizePhone(dto.RecieverUnameOrPhone));
+                                                             x.PhoneNumber == Helpers.SanitizePhone(dto.RecieverUnameOrPhone));
 
                 if (reciever.Id == sender.Id)
                 {

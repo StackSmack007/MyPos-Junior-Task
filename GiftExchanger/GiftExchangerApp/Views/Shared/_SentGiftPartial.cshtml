@@ -2,7 +2,7 @@
 <div class="card m-2" style="width: 16rem;">
     <div class="card-body">
         <h5 class="card-title font-weight-bold">Sent: @Model.Ammount.ToString("F2")</h5>
-        <h6 class="card-subtitle mb-2">Reciever: @Model.RecieverUserName@(@Model.RecieverPhoneNumber)</h6>
+        <h6 class="card-subtitle mb-2">Reciever: @Model.RecieverUserName@@(@Model.RecieverPhoneNumber)</h6>
         <p class="card-text">@Model.Comment</p>
         <h6 class="card-subtitle mb-2 text-muted font-italic">Sent on: @GlobalConstants.FormatDateTime(Model.CreatedOn)</h6>
         <form asp-area="" asp-controller="Dashboard" asp-action="SendGift" method="post">

@@ -1,10 +1,9 @@
 ﻿@model UserDashboardInfoDTOout
 <center>
     <h3 class="py-3"><i class="fas fa-clipboard-list"></i> Dashboard</h3>
-    <h4>Current Credit Balance: @Model.CreditBalance.ToString("F2")</h4>
+    <h4><i class="fas fa-money-bill-wave"></i> Current Credit Balance: @Model.CreditBalance.ToString("F2")</h4>
 
-    <p>Balance: @Model.CreditBalance Credits</p>
-
+    <h4>Exchange History:</h4>
     <div class="w-75  my-3" style="min-width:300px">
         <h4 class="text-left">Gifts I recieved from others:</h4>
         <div class="border-dark rounded d-flex flex-wrap border justify-content-center">

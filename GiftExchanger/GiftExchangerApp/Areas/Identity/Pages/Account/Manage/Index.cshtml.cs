@@ -81,7 +81,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var gsmRecievedFormated = GlobalConstants.SanitizePhone(Input.PhoneNumber);
+            var gsmRecievedFormated = Helpers.SanitizePhone(Input.PhoneNumber);
             if (gsmRecievedFormated == user.PhoneNumber)
             {
                 StatusMessage = GlobalConstants.PhoneAlreadySetError(gsmRecievedFormated);

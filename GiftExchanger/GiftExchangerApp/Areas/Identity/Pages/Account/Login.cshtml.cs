@@ -77,7 +77,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var userFd = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == Input.UnameOrPhone ||
-                                                                          x.PhoneNumber == GlobalConstants.SanitizePhone(Input.UnameOrPhone));
+                                                                          x.PhoneNumber == Helpers.SanitizePhone(Input.UnameOrPhone));
 
                 if (userFd != null && 
                     (await _signInManager.PasswordSignInAsync(userFd, Input.Password, Input.RememberMe, lockoutOnFailure: false)).Succeeded)
