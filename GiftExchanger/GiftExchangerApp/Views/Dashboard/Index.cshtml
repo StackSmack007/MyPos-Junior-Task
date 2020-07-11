@@ -5,21 +5,36 @@
 
     <h4>Exchange History:</h4>
     <div class="w-75  my-3" style="min-width:300px">
-        <h4 class="text-left">Gifts I recieved from others:</h4>
-        <div class="border-dark rounded d-flex flex-wrap border justify-content-center">
-            @foreach (var sent in Model.Sent)
-            {
-                <partial name="_SentGiftPartial" model="sent" />
-            }
-        </div>
-        <hr />
-        <h4 class="text-left">Gifts I sent to others:</h4>
-        <div class="border-dark rounded d-flex flex-wrap border justify-content-center">
-            @foreach (var recieved in Model.Recieved)
-            {
-                <partial name="_RecievedGiftPartial" model="recieved" />
-            }
-        </div>
+
+        @if (Model.Sent.Any())
+        {
+            <h4 class="text-left">Gifts I recieved from others:</h4>
+            <div class="border-dark rounded d-flex flex-wrap border justify-content-center">
+                @foreach (var sent in Model.Sent)
+                {
+                    <partial name="_SentGiftPartial" model="sent" />
+                }
+            </div>
+            <hr />
+        }
+        else
+        {
+            <h4 class="text-left">I have not recieved any gifts yet...:</h4>
+        }
+        @if (Model.Recieved.Any())
+        {
+            <h4 class="text-left">Gifts I sent to others:</h4>
+            <div class="border-dark rounded d-flex flex-wrap border justify-content-center">
+                @foreach (var recieved in Model.Recieved)
+                {
+                    <partial name="_RecievedGiftPartial" model="recieved" />
+                }
+            </div>
+        }
+        else
+        {
+            <h4 class="text-left">I have not sent any gifts yet...:</h4>
+        }
     </div>
     <a asp-area="" asp-controller="Dashboard" asp-action="SendGift" class="btn btn-primary">Send Gift To Another</a>
 </center>

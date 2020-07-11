@@ -24,7 +24,7 @@ namespace Infrasturcture.Data
                                                              .SetBasePath(Directory.GetCurrentDirectory())
                                                              .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                                                              .Build();
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("LocalConnectionString"));
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DeployConnectionString"));
             }
 
             base.OnConfiguring(optionsBuilder);
