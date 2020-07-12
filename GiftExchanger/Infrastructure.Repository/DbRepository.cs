@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Infrasturcture.Data;
 using CommonLibrary.Interfaces;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Repository
 {
@@ -43,5 +44,11 @@ namespace Infrastructure.Repository
 
         public async Task<int> SaveChangesAsync() =>
             await this.context.SaveChangesAsync();
+
+        public IDbContextTransaction BeginTransaction() =>
+            this.context.Database.BeginTransaction();
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync() =>
+            await this.context.Database.BeginTransactionAsync();
     }
 }

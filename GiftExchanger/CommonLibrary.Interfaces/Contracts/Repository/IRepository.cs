@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,16 +9,20 @@ namespace CommonLibrary.Interfaces
         where T : class
     {
         IQueryable<T> All { get; }
+
         void Add(T entity);
+        Task AddAsync(T entity);
+
         void AddRange(ICollection<T> entities);
-        void RemoveRange(ICollection<T> entities);
+        Task AddRangeAsync(ICollection<T> entities);
+
         void Remove(T entity);
+        void RemoveRange(ICollection<T> entities);
 
         int SaveChanges();
-
-        Task AddAsync(T entity);
         Task<int> SaveChangesAsync();
 
-        Task AddRangeAsync(ICollection<T> entities);
+        IDbContextTransaction BeginTransaction();
+        Task<IDbContextTransaction> BeginTransactionAsync();
     }
 }

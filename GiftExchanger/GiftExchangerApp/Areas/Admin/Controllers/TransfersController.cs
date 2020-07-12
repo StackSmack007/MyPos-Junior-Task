@@ -27,12 +27,11 @@ namespace GiftExchangerApp.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public IActionResult AddCredits(CreditAdditionDTOin dto)
+        public async Task<IActionResult> AddCredits(CreditAdditionDTOin dto)
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("Index", "Users", new { Area = "Admin" });
-
-            transferService.IncreaseUserCredits(dto);
+            await transferService.IncreaseUserCreditsAsync(dto);
             return RedirectToAction("Index", "Users", new { Area = "Admin" });
         }
     }

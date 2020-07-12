@@ -28,18 +28,18 @@ namespace ServiceLibrary
         public async Task<UserDashboardInfoDTOout> GetTransactionsUserIdAsync(string userId) =>
             await _userManager.Users.Where(x => x.Id == userId).To<UserDashboardInfoDTOout>().FirstOrDefaultAsync();
 
-        public bool IncreaseUserCredits(CreditAdditionDTOin dto)
+        public async Task<bool> IncreaseUserCreditsAsync(CreditAdditionDTOin dto)
         {
-            lock (LockObjects.UserBalanceObject)
+            using (var transaction = await transfersRepository.BeginTransactionAsync())
             {
-                var userFd = _userManager.FindByIdAsync(dto.RecieverId).GetAwaiter().GetResult();
+                var userFd = await _userManager.FindByIdAsync(dto.RecieverId);
                 if (userFd is null)
                 {
                     return false;
                 }
-
                 userFd.CreditBalance += dto.Ammount;
-                _userManager.UpdateAsync(userFd).GetAwaiter().GetResult();
+                await _userManager.UpdateAsync(userFd);
+                await transaction.CommitAsync();
             }
 
             return true;
@@ -47,50 +47,41 @@ namespace ServiceLibrary
 
         public async Task TransferCreditsAsync(ClaimsPrincipal user, TransferDTOin dto)
         {
-            bool recieverFound = await _userManager.Users
-                .AnyAsync(x => x.UserName.ToLower() == dto.RecieverUnameOrPhone.ToLower() ||
-                x.PhoneNumber == Helpers.SanitizePhone(dto.RecieverUnameOrPhone));
-
-            if (!recieverFound)
+            using (var transaction = await transfersRepository.BeginTransactionAsync())
             {
-                throw new ArgumentOutOfRangeException(GlobalConstants.UserNotLocatedByPhoneOrUserNameError(dto.RecieverUnameOrPhone));
-            }
-
-            UserGE sender = null;
-            UserGE reciever = null;
-
-            lock (LockObjects.UserBalanceObject)
-            {
-                sender = _userManager.GetUserAsync(user).GetAwaiter().GetResult();
+                UserGE sender = await _userManager.GetUserAsync(user);
                 if (sender.CreditBalance < dto.Ammount)
                 {
                     throw new ArgumentOutOfRangeException(GlobalConstants.InsufficientFundsError);
                 }
 
-                reciever = _userManager.Users.FirstOrDefault(x => x.UserName.ToLower() == dto.RecieverUnameOrPhone.ToLower() ||
+                UserGE reciever = _userManager.Users.FirstOrDefault(x => x.UserName.ToLower() == dto.RecieverUnameOrPhone.ToLower() ||
                                                              x.PhoneNumber == Helpers.SanitizePhone(dto.RecieverUnameOrPhone));
 
-                if (reciever.Id == sender.Id)
+                if (reciever is null)
+                {
+                    throw new ArgumentOutOfRangeException(GlobalConstants.UserNotLocatedByPhoneOrUserNameError(dto.RecieverUnameOrPhone));
+                }
+                else if (reciever.Id == sender.Id)
                 {
                     throw new ArgumentOutOfRangeException(GlobalConstants.AutoSendCreditsError);
                 }
 
                 sender.CreditBalance -= dto.Ammount;
                 reciever.CreditBalance += dto.Ammount;
-                _userManager.UpdateAsync(sender).GetAwaiter().GetResult();
-                _userManager.UpdateAsync(reciever).GetAwaiter().GetResult();
-            }
 
-            var transaction = new CreditTransfer
-            {
-                Sender = sender,
-                Reciever = reciever,
-                Ammount = dto.Ammount,
-                Comment = dto.Comment
-            };
-            sender.TransactionsSent.Add(transaction);
-            await _userManager.UpdateAsync(sender);
-            CommonLibrary.Cashe.CasheData.ResetData(GlobalConstants.StatisticsStore);
+                var transfer = new CreditTransfer
+                {
+                    Sender = sender,
+                    Reciever = reciever,
+                    Ammount = dto.Ammount,
+                    Comment = dto.Comment
+                };
+                sender.TransactionsSent.Add(transfer);
+                await transfersRepository.SaveChangesAsync();
+                await transaction.CommitAsync();
+                CommonLibrary.Cashe.CasheData.ResetData(GlobalConstants.StatisticsStore);
+            }
         }
     }
 }

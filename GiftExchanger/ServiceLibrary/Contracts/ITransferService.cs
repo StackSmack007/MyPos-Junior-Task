@@ -10,6 +10,6 @@ namespace ServiceLibrary
         IQueryable<TransferInfoDTOout> GetAllTransfersInfo();
         Task<UserDashboardInfoDTOout> GetTransactionsUserIdAsync(string userId);
         Task TransferCreditsAsync(ClaimsPrincipal user, TransferDTOin dto);
-        bool IncreaseUserCredits(CreditAdditionDTOin dto);
+        Task<bool> IncreaseUserCreditsAsync(CreditAdditionDTOin dto);
     }
 }
