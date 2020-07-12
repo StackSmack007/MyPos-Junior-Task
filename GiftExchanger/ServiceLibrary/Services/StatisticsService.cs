@@ -1,5 +1,4 @@
 ﻿using CommonLibrary;
-using CommonLibrary.Cashe;
 using CommonLibrary.Interfaces;
 using Infrastructure.DTOS;
 using Infrasturcture.Models;
@@ -16,21 +15,21 @@ namespace ServiceLibrary
 
         private readonly UserManager<UserGE> _userManager;
         private readonly IRepository<CreditTransfer> transfersRepository;
+        private readonly ICasheHandler casheHandler;
 
-        public StatisticsService(UserManager<UserGE> userManager, IRepository<CreditTransfer> transfersRepository)
+        public StatisticsService(UserManager<UserGE> userManager, IRepository<CreditTransfer> transfersRepository, ICasheHandler casheHandler)
         {
             this._userManager = userManager;
             this.transfersRepository = transfersRepository;
+            this.casheHandler = casheHandler;
         }
 
         public async Task<AppStatisticsDTOout> GetStatisticsAsync()
         {
-            if (!CasheData.HasData("OveralStats"))
+            if (!await casheHandler.HasDataAsync(GlobalConstants.StatisticsCasheName))
             {
                 UserGE[] users = await _userManager.Users.ToArrayAsync();
-
                 var admins = new HashSet<string>();
-
 
                 foreach (var user in users)
                 {
@@ -48,10 +47,10 @@ namespace ServiceLibrary
                     TotalTransferedCredits = await transfersRepository.All.Where(x => !x.IsDeleted).SumAsync(x => x.Ammount),
                 };
 
-                CasheData.Save(GlobalConstants.StatisticsStore, result);
+                await casheHandler.SetDataAsync(GlobalConstants.StatisticsCasheName, result);
             }
 
-            return CasheData.Retrieve<AppStatisticsDTOout>(GlobalConstants.StatisticsStore);
+            return await casheHandler.GetData<AppStatisticsDTOout>(GlobalConstants.StatisticsCasheName);
         }
     }
 }

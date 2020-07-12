@@ -15,14 +15,18 @@ using Infrastructure.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CommonLibrary.Interfaces;
+using CommonLibrary;
 
 namespace GiftExchangerApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment env;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            this.env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -39,9 +43,9 @@ namespace GiftExchangerApp
 
             services.AddDbContext<GiftExchangerContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString(env.IsDevelopment() ? "DefaultConnection" : "DeployConnectionString")));
 
-
+            services.AddDistributedMemoryCache();
             services.AddIdentity<UserGE, IdentityRole>(opt =>
             {
                 opt.Password.RequireDigit = false;
@@ -82,6 +86,7 @@ namespace GiftExchangerApp
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<ITransferService, TransferService>();
+            services.AddSingleton<ICasheHandler, CasheHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

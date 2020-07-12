@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace CommonLibrary
 {
@@ -16,8 +15,7 @@ namespace CommonLibrary
         public static Func<string, string> UserNotLocatedByPhoneOrUserNameError = (x) => $"{ERROR_PREFIX} User with phone or username {x} was not found!";
         public static readonly string InsufficientFundsError = $"{ERROR_PREFIX} Insufficient funds";
         public static readonly string AutoSendCreditsError = $"{ERROR_PREFIX} Not allowed to send credits to yourself!";
-
-        public const string StatisticsStore = "StatisticsStore";
+        public static readonly string StatisticsCasheName = "StatisticsStore";
 
 
         public static Func<DateTime, string> FormatDateTime = (x) => x.ToString("dd/MM/yyyy hh:mm");

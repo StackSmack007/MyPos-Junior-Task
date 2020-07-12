@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using CommonLibrary;
 using ServiceLibrary;
 using System.Threading;
+using CommonLibrary.Interfaces;
 
 namespace GiftExchangerApp.Areas.Identity.Pages.Account
 {
@@ -20,6 +21,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<UserGE> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ICasheHandler casheHandler;
         private readonly UserManager<UserGE> _userManager;
         private readonly IUserService userService;
         private readonly ILogger<RegisterModel> _logger;
@@ -28,12 +30,14 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
             UserManager<UserGE> userManager,
             SignInManager<UserGE> signInManager,
             RoleManager<IdentityRole> roleManager,
+            ICasheHandler casheHandler,
             IUserService userService,
             ILogger<RegisterModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            this.casheHandler = casheHandler;
             this.userService = userService;
             _logger = logger;
             StatusMessages = new List<string>();
@@ -99,7 +103,7 @@ namespace GiftExchangerApp.Areas.Identity.Pages.Account
                     await AssignRoleToFirstNUsers(GlobalConstants.AdminsCount, user, adminRoleName);
 
                     _logger.LogInformation("User created a new account with password.");
-                    CommonLibrary.Cashe.CasheData.ResetData(GlobalConstants.StatisticsStore);
+                    await casheHandler.ClearDataAsync(GlobalConstants.StatisticsCasheName);
                     StatusMessages.Add("Successfull Registration!");
                     Thread.Sleep(1000);
 

@@ -16,11 +16,13 @@ namespace ServiceLibrary
     {
         private readonly UserManager<UserGE> _userManager;
         private readonly IRepository<CreditTransfer> transfersRepository;
+        private readonly ICasheHandler casheHandler;
 
-        public TransferService(UserManager<UserGE> userManager, IRepository<CreditTransfer> transfersRepository)
+        public TransferService(UserManager<UserGE> userManager, IRepository<CreditTransfer> transfersRepository, ICasheHandler casheHandler)
         {
             this._userManager = userManager;
             this.transfersRepository = transfersRepository;
+            this.casheHandler = casheHandler;
         }
 
         public IQueryable<TransferInfoDTOout> GetAllTransfersInfo() =>
@@ -80,7 +82,7 @@ namespace ServiceLibrary
                 sender.TransactionsSent.Add(transfer);
                 await transfersRepository.SaveChangesAsync();
                 await transaction.CommitAsync();
-                CommonLibrary.Cashe.CasheData.ResetData(GlobalConstants.StatisticsStore);
+                await casheHandler.ClearDataAsync(GlobalConstants.StatisticsCasheName);
             }
         }
     }
