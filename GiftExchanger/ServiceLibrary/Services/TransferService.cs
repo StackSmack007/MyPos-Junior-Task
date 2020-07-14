@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CommonLibrary.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ServiceLibrary
 {
@@ -16,13 +17,13 @@ namespace ServiceLibrary
     {
         private readonly UserManager<UserGE> _userManager;
         private readonly IRepository<CreditTransfer> transfersRepository;
-        private readonly ICasheHandler casheHandler;
+        private readonly IMemoryCache cache;
 
-        public TransferService(UserManager<UserGE> userManager, IRepository<CreditTransfer> transfersRepository, ICasheHandler casheHandler)
+        public TransferService(UserManager<UserGE> userManager, IRepository<CreditTransfer> transfersRepository, IMemoryCache cache)
         {
             this._userManager = userManager;
             this.transfersRepository = transfersRepository;
-            this.casheHandler = casheHandler;
+            this.cache = cache;
         }
 
         public IQueryable<TransferInfoDTOout> GetAllTransfersInfo() =>
@@ -80,9 +81,9 @@ namespace ServiceLibrary
                     Comment = dto.Comment
                 };
                 sender.TransactionsSent.Add(transfer);
+                cache.Remove(GlobalConstants.StatisticsCasheName);
                 await transfersRepository.SaveChangesAsync();
                 await transaction.CommitAsync();
-                await casheHandler.ClearDataAsync(GlobalConstants.StatisticsCasheName);
             }
         }
     }
