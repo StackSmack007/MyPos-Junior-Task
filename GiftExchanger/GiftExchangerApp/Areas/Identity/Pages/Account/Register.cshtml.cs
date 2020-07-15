@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using CommonLibrary;
 using ServiceLibrary;
 using System.Threading;
-using CommonLibrary.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace GiftExchangerApp.Areas.Identity.Pages.Account
